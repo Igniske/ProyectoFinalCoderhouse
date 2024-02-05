@@ -13,7 +13,7 @@ namespace ProyectoFinalCoder
         private double _costo;
         private double _precioVenta;
         private int _stock;
-        private int _idUsuario;
+        private int _idUsuario;    
 
         public int Id { get; set; }
         public string Descripcion { get; set; }
