@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using SistemaGestionEntities;
+using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProyectoFinalCoder
+namespace SistemaGestionData
 {
-    internal class ProductoData
+    public class ProductoData
     {
         public static List<Producto> ObtenerProducto(int idProducto)
         {
@@ -83,35 +84,36 @@ namespace ProyectoFinalCoder
             return listaDeProductos;
         }
 
-        public static void CrearProducto(Producto producto)
+        public static bool CrearProducto(Producto producto)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
-
-            var query = "INSERT INTO Producto (Descripcion, Costo, PrecioVenta, Stock, IdUsuario)" +
-                "VALUES (@Descripcion, @Costo, @PrecioVenta, @Stock, @IdUsuario)";
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
-                conexion.Open();
-                using (SqlCommand comando = new SqlCommand(query, conexion))
-                {
-                    //Reformular
-                    comando.Parameters.Add(new SqlParameter("Descripcion", System.Data.SqlDbType.VarChar) { Value = producto.Descripcion });
-                    comando.Parameters.Add(new SqlParameter("Costo", System.Data.SqlDbType.Money) { Value = producto.Costo });;
-                    comando.Parameters.Add(new SqlParameter("PrecioVenta", System.Data.SqlDbType.Money) { Value = producto.PrecioVenta });
-                    comando.Parameters.Add(new SqlParameter("Stock", System.Data.SqlDbType.Int) { Value = producto.Stock });
-                    comando.Parameters.Add(new SqlParameter("IdUsuario", System.Data.SqlDbType.VarChar) { Value = producto.IdUsuario });
-                }
-                conexion.Close();
+                var query = "INSERT INTO Producto (Descripcion, Costo, PrecioVenta, Stock, IdUsuario)" +
+                "VALUES (@Descripcion, @Costo, @PrecioVenta, @Stock, @IdUsuario)";
+
+                SqlCommand comando = new SqlCommand(query, conexion);
+                
+                 comando.Parameters.Add(new SqlParameter("Descripcion", System.Data.SqlDbType.VarChar) { Value = producto.Descripcion });
+                 comando.Parameters.Add(new SqlParameter("Costo", System.Data.SqlDbType.Money) { Value = producto.Costo }); ;
+                 comando.Parameters.Add(new SqlParameter("PrecioVenta", System.Data.SqlDbType.Money) { Value = producto.PrecioVenta });
+                 comando.Parameters.Add(new SqlParameter("Stock", System.Data.SqlDbType.Int) { Value = producto.Stock });
+                 comando.Parameters.Add(new SqlParameter("IdUsuario", System.Data.SqlDbType.VarChar) { Value = producto.IdUsuario });
+
+                return comando.ExecuteNonQuery() > 0;
             }
         }
 
-        public static void ModificarProducto(Producto producto)
+        public static bool ModificarProducto(Producto producto)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
 
-            var query = "UPDATE Producto" +
-                        //reformular aca
+            
+
+            using (SqlConnection conexion = new SqlConnection(connectionString))
+            {
+                var query = "UPDATE Producto" +
                         " SET Descripcion = @Descripcion" +
                         ", Costo = @Costo" +
                         ", PrecioVenta = @PrecioVenta" +
@@ -119,37 +121,32 @@ namespace ProyectoFinalCoder
                         ", IdUsuario = @IdUsuario" +
                         "WHERE Id = @Id";
 
-            using (SqlConnection conexion = new SqlConnection(connectionString))
-            {
-                conexion.Open();
-                using (SqlCommand comando = new SqlCommand(query, conexion))
-                {
-                    //reformular aca
-                    comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = producto.Id });
-                    comando.Parameters.Add(new SqlParameter("Descripcion", System.Data.SqlDbType.VarChar) { Value = producto.Descripcion });
-                    comando.Parameters.Add(new SqlParameter("Costo", System.Data.SqlDbType.Money) { Value = producto.Costo }); ;
-                    comando.Parameters.Add(new SqlParameter("PrecioVenta", System.Data.SqlDbType.Money) { Value = producto.PrecioVenta });
-                    comando.Parameters.Add(new SqlParameter("Stock", System.Data.SqlDbType.Int) { Value = producto.Stock });
-                    comando.Parameters.Add(new SqlParameter("IdUsuario", System.Data.SqlDbType.VarChar) { Value = producto.IdUsuario });
-                }
-                conexion.Close();
+                SqlCommand comando = new SqlCommand(query, conexion);
+
+                comando.Parameters.Add(new SqlParameter("Descripcion", System.Data.SqlDbType.VarChar) { Value = producto.Descripcion });
+                comando.Parameters.Add(new SqlParameter("Costo", System.Data.SqlDbType.Money) { Value = producto.Costo }); ;
+                comando.Parameters.Add(new SqlParameter("PrecioVenta", System.Data.SqlDbType.Money) { Value = producto.PrecioVenta });
+                comando.Parameters.Add(new SqlParameter("Stock", System.Data.SqlDbType.Int) { Value = producto.Stock });
+                comando.Parameters.Add(new SqlParameter("IdUsuario", System.Data.SqlDbType.VarChar) { Value = producto.IdUsuario });
+
+                return comando.ExecuteNonQuery() > 0;
             }
         }
 
-        public static void EliminarProducto(Producto producto)
+        public static bool EliminarProducto(Producto producto)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
 
-            var query = "DELETE FROM Producto WHERE Id=@Id";
+            
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
-                conexion.Open();
-                using (SqlCommand comando = new SqlCommand(query, conexion))
-                {
-                    comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = producto.Id });
-                }
-                conexion.Close();
+                var query = "DELETE FROM Producto WHERE Id=@Id";
+                SqlCommand comando = new SqlCommand(query, conexion);
+                
+                comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = producto.Id });
+
+                return comando.ExecuteNonQuery() > 0;
             }
         }
     }

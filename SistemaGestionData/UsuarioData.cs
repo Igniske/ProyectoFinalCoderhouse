@@ -1,16 +1,18 @@
 ﻿using System;
+using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using SistemaGestionEntities;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
 
-
-namespace ProyectoFinalCoder
+namespace SistemaGestionData
 {
-    internal class UsuarioData
+    public class UsuarioData
     {
-        public static List<Usuario> ObtenerUsuario(int idUsuario) 
+
+        public static List<Usuario> ObtenerUsuario(int idUsuario)
         {
             List<Usuario> usuariosConIdIndicado = new List<Usuario>();
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
@@ -18,9 +20,9 @@ namespace ProyectoFinalCoder
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
                 conexion.Open();
-                
-                using (SqlCommand comando = new SqlCommand(query, conexion)) 
-                    {
+
+                using (SqlCommand comando = new SqlCommand(query, conexion))
+                {
                     var parametro = new SqlParameter();
                     parametro.ParameterName = "idUsuario";
                     parametro.SqlDbType = System.Data.SqlDbType.Int;
@@ -28,12 +30,12 @@ namespace ProyectoFinalCoder
 
                     comando.Parameters.Add(parametro);
 
-                    using (SqlDataReader reader = comando.ExecuteReader()) 
+                    using (SqlDataReader reader = comando.ExecuteReader())
+                    {
+                        if (reader.HasRows)
                         {
-                        if(reader.HasRows)
+                            while (reader.Read())
                             {
-                            while (reader.Read()) 
-                                {
                                 var usuario = new Usuario();
                                 usuario.Id = Convert.ToInt32(reader["ID"]);
                                 usuario.Nombre = reader["Nombre"].ToString();
@@ -42,15 +44,15 @@ namespace ProyectoFinalCoder
                                 usuario.Contrasenia = reader["Contrasenia"].ToString();
                                 usuario.Mail = reader["Mail"].ToString();
                                 usuariosConIdIndicado.Add(usuario);
-                                }
-                             }
+                            }
                         }
                     }
                 }
+            }
             return usuariosConIdIndicado;
         }
 
-        public static List<Usuario> ListarUsuarios() 
+        public static List<Usuario> ListarUsuarios()
         {
             List<Usuario> listaDeUsuarios = new List<Usuario>();
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
@@ -84,71 +86,65 @@ namespace ProyectoFinalCoder
             return listaDeUsuarios;
         }
 
-        public static void CrearUsuario(Usuario usuario)
+        public static bool CrearUsuario(Usuario usuario)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
 
-            var query = "INSERT INTO Usuario (Id, Nombre, Apellido, NombreUsuario, Contrasenia, Mail)" + 
-                "VALUES (@Id, @Nombre, @Apellido, @NombreUsuario, @Contrasenia, @Mail)";
+            using (SqlConnection conexion = new SqlConnection(connectionString))
+            {
+                var query = "INSERT INTO Usuario (Nombre, Apellido, NombreUsuario, Contrasenia, Mail)" +
+                "VALUES (@Nombre, @Apellido, @NombreUsuario, @Contrasenia, @Mail)";
 
-            using(SqlConnection conexion = new SqlConnection(connectionString))
-                { 
-                conexion.Open();
-                using (SqlCommand comando = new SqlCommand(query, conexion)) 
-                    {
-                    comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int)  { Value = usuario.Id });
-                    comando.Parameters.Add(new SqlParameter("Nombre", System.Data.SqlDbType.VarChar) { Value = usuario.Nombre });
-                    comando.Parameters.Add(new SqlParameter("Apellido", System.Data.SqlDbType.VarChar) { Value = usuario.Apellido });
-                    comando.Parameters.Add(new SqlParameter("NombreUsuario", System.Data.SqlDbType.VarChar) { Value = usuario.NombreUsuario });
-                    comando.Parameters.Add(new SqlParameter("Contrasenia", System.Data.SqlDbType.VarChar) { Value = usuario.Contrasenia });
-                    comando.Parameters.Add(new SqlParameter("Mail", System.Data.SqlDbType.VarChar) { Value = usuario.Mail });
-                    }
-                conexion.Close();
-                }
+                SqlCommand comando = new SqlCommand(query, conexion);
+                comando.Parameters.Add(new SqlParameter("Nombre", System.Data.SqlDbType.VarChar) { Value = usuario.Nombre });
+                comando.Parameters.Add(new SqlParameter("Apellido", System.Data.SqlDbType.VarChar) { Value = usuario.Apellido });
+                comando.Parameters.Add(new SqlParameter("NombreUsuario", System.Data.SqlDbType.VarChar) { Value = usuario.NombreUsuario });
+                comando.Parameters.Add(new SqlParameter("Contrasenia", System.Data.SqlDbType.VarChar) { Value = usuario.Contrasenia });
+                 comando.Parameters.Add(new SqlParameter("Mail", System.Data.SqlDbType.VarChar) { Value = usuario.Mail });
+
+                return comando.ExecuteNonQuery() > 0;
+            }
         }
 
-        public static void ModificarUsuario(Usuario usuario)
+        public static bool ModificarUsuario(Usuario usuario, int id)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
 
-            var query = "UPDATE Usuario" +
+            using (SqlConnection conexion = new SqlConnection(connectionString))
+            {
+                string query = "UPDATE Usuario" +
                         " SET Nombre = @Nombre" +
                         ", Apellido = @Apellido" +
                         ", NombreUsuario = @NombreUsuario" +
                         ", Contrasenia = @Contrasenia" +
                         ", Mail = @Mail" +
-                        "WHERE Id = @Id";
+                        "WHERE Id = @" + id;
 
-            using (SqlConnection conexion = new SqlConnection(connectionString))
-            {
-                conexion.Open();
-                using (SqlCommand comando = new SqlCommand(query, conexion))
-                {
-                    comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = usuario.Id });
-                    comando.Parameters.Add(new SqlParameter("Nombre", System.Data.SqlDbType.VarChar) { Value = usuario.Nombre });
-                    comando.Parameters.Add(new SqlParameter("Apellido", System.Data.SqlDbType.VarChar) { Value = usuario.Apellido });
-                    comando.Parameters.Add(new SqlParameter("NombreUsuario", System.Data.SqlDbType.VarChar) { Value = usuario.NombreUsuario });
-                    comando.Parameters.Add(new SqlParameter("Contrasenia", System.Data.SqlDbType.VarChar) { Value = usuario.Contrasenia });
-                    comando.Parameters.Add(new SqlParameter("Mail", System.Data.SqlDbType.VarChar) { Value = usuario.Mail });
-                }
-                conexion.Close();
+                SqlCommand comando = new SqlCommand(query, conexion);
+                comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = usuario.Id });
+                comando.Parameters.Add(new SqlParameter("Nombre", System.Data.SqlDbType.VarChar) { Value = usuario.Nombre });
+                comando.Parameters.Add(new SqlParameter("Apellido", System.Data.SqlDbType.VarChar) { Value = usuario.Apellido });
+                comando.Parameters.Add(new SqlParameter("NombreUsuario", System.Data.SqlDbType.VarChar) { Value = usuario.NombreUsuario });
+                comando.Parameters.Add(new SqlParameter("Contrasenia", System.Data.SqlDbType.VarChar) { Value = usuario.Contrasenia });
+                comando.Parameters.Add(new SqlParameter("Mail", System.Data.SqlDbType.VarChar) { Value = usuario.Mail });
+
+                return comando.ExecuteNonQuery() > 0;
             }
-         }
+        }
 
-        public static void EliminarUsuario(Usuario usuario)
+        public static bool EliminarUsuario(Usuario usuario, int Id)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
 
-            var query = "DELETE FROM Usuario WHERE Id=@Id";
+            
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
-                conexion.Open();
-                using (SqlCommand comando = new SqlCommand(query, conexion))
-                {
-                    comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = usuario.Id});
-                }
-                conexion.Close();
+                string query = "DELETE FROM Usuario WHERE Id=@" + Id;
+
+                SqlCommand comando = new SqlCommand(query, conexion);
+                comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = usuario.Id });
+                return comando.ExecuteNonQuery() > 0;
             }
         }
     }

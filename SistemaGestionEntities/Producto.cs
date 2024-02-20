@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProyectoFinalCoder
+namespace SistemaGestionEntities
 {
-    internal class Producto
+    public class Producto
     {
         private int _id;
         private string _descripcion;
         private double _costo;
         private double _precioVenta;
         private int _stock;
-        private int _idUsuario;    
+        private int _idUsuario;
 
         public int Id { get; set; }
         public string Descripcion { get; set; }

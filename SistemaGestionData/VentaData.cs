@@ -1,13 +1,15 @@
 ﻿using System;
+using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
+using SistemaGestionEntities;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
 
-namespace ProyectoFinalCoder
+namespace SistemaGestionData
 {
-    internal class VentaData
+    public class VentaData
     {
         public static List<Venta> ObtenerVenta(int idVenta)
         {
@@ -77,63 +79,60 @@ namespace ProyectoFinalCoder
             return listaDeVentas;
         }
 
-        public static void CrearVenta(Venta venta)
+
+        public static bool CrearVenta(Venta venta)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
 
-            var query = "INSERT INTO Venta (Id, Comentarios, IdUsuario)" +
+            using (SqlConnection conexion = new SqlConnection(connectionString))
+            {
+                var query = "INSERT INTO Venta (Id, Comentarios, IdUsuario)" +
                 "VALUES (@Id, @Comentarios, @IdUsuario)";
 
-            using (SqlConnection conexion = new SqlConnection(connectionString))
-            {
-                conexion.Open();
-                using (SqlCommand comando = new SqlCommand(query, conexion))
-                {
-                    comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = venta.Id });
-                    comando.Parameters.Add(new SqlParameter("Comentarios", System.Data.SqlDbType.VarChar) { Value = venta.Comentarios });
-                    comando.Parameters.Add(new SqlParameter("IdUsuario", System.Data.SqlDbType.VarChar) { Value = venta.IdUsuario });
-                }
-                conexion.Close();
+                SqlCommand comando = new SqlCommand(query, conexion);
+                comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = venta.Id });
+                comando.Parameters.Add(new SqlParameter("Comentarios", System.Data.SqlDbType.VarChar) { Value = venta.Comentarios });
+                comando.Parameters.Add(new SqlParameter("IdUsuario", System.Data.SqlDbType.VarChar) { Value = venta.IdUsuario });
+
+                return comando.ExecuteNonQuery() > 0;
             }
         }
 
-        public static void ModificarVenta(Venta venta)
+
+
+        public static bool ModificarVenta(Venta venta)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
 
-            var query = "UPDATE Venta" +
-                        " SET Id = @Id" +
-                        ", Comentarios = @Comentarios" +
-                        ", IdUsuario = @IdUsuario" +
-                        "WHERE Id = @Id";
+            
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
-                conexion.Open();
-                using (SqlCommand comando = new SqlCommand(query, conexion))
-                {
-                    comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = venta.Id });
-                    comando.Parameters.Add(new SqlParameter("Comentarios", System.Data.SqlDbType.VarChar) { Value = venta.Comentarios });
-                    comando.Parameters.Add(new SqlParameter("IdUsuario", System.Data.SqlDbType.VarChar) { Value = venta.IdUsuario });
-                }
-                conexion.Close();
+                var query = "INSERT INTO Venta (Id, Comentarios, IdUsuario)" +
+                "VALUES (@Id, @Comentarios, @IdUsuario)";
+
+                SqlCommand comando = new SqlCommand(query, conexion);
+                comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = venta.Id });
+                comando.Parameters.Add(new SqlParameter("Comentarios", System.Data.SqlDbType.VarChar) { Value = venta.Comentarios });
+                comando.Parameters.Add(new SqlParameter("IdUsuario", System.Data.SqlDbType.VarChar) { Value = venta.IdUsuario });
+
+                return comando.ExecuteNonQuery() > 0;
             }
         }
 
-        public static void EliminarVenta(Venta venta)
+        public static bool EliminarVenta(Venta venta)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
 
-            var query = "DELETE FROM Venta WHERE Id=@Id";
-
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
-                conexion.Open();
-                using (SqlCommand comando = new SqlCommand(query, conexion))
-                {
-                    comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = venta.Id });
-                }
-                conexion.Close();
+                var query = "DELETE FROM Venta WHERE Id=@Id";
+
+                SqlCommand comando = new SqlCommand(query, conexion);
+                
+                comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = venta.Id });
+
+                return comando.ExecuteNonQuery() > 0;
             }
         }
     }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProyectoFinalCoder
+namespace SistemaGestionEntities
 {
-    internal class Usuario
+    public class Usuario
     {
         private int _id;
         private string _nombre;
@@ -21,6 +21,5 @@ namespace ProyectoFinalCoder
         public string NombreUsuario { get; set; }
         public string Contrasenia { get; set; }
         public string Mail { get; set; }
-
     }
 }

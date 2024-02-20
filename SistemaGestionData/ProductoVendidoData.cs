@@ -1,13 +1,14 @@
 ﻿using System;
+using Microsoft.Data.SqlClient;
+using SistemaGestionEntities;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProyectoFinalCoder
+namespace SistemaGestionData
 {
-    internal class ProductoVendidoData
+    public class ProductoVendidoData
     {
         public static List<ProductoVendido> ObtenerProductoVendido(int idProductoVendido)
         {
@@ -79,25 +80,26 @@ namespace ProyectoFinalCoder
             return listaDeProductosVendidos;
         }
 
-        public static void CrearProductoVendido(ProductoVendido productoVendido)
+        public static bool CrearProductoVendido(ProductoVendido productoVendido)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
 
-            var query = "INSERT INTO ProductoVendido (@Id, @IdProducto, @Stock, @IdVenta)" +
-                "VALUES (@Id, @IdProducto, @Stock, @IdVenta)";
+            
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
-                conexion.Open();
-                using (SqlCommand comando = new SqlCommand(query, conexion))
-                {
-                    //Reformular
-                    comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = productoVendido.Id });
-                    comando.Parameters.Add(new SqlParameter("IdProducto", System.Data.SqlDbType.Int) { Value = productoVendido.IdProducto }); ;
-                    comando.Parameters.Add(new SqlParameter("Stock", System.Data.SqlDbType.Int) { Value = productoVendido.Stock });
-                    comando.Parameters.Add(new SqlParameter("IdVenta", System.Data.SqlDbType.Int) { Value = productoVendido.IdVenta });
-                }
-                conexion.Close();
+
+                var query = "INSERT INTO ProductoVendido (@Id, @IdProducto, @Stock, @IdVenta)" +
+                "VALUES (@Id, @IdProducto, @Stock, @IdVenta)";
+
+                SqlCommand comando = new SqlCommand(query, conexion);
+                
+                comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = productoVendido.Id });
+                comando.Parameters.Add(new SqlParameter("IdProducto", System.Data.SqlDbType.Int) { Value = productoVendido.IdProducto }); ;
+                comando.Parameters.Add(new SqlParameter("Stock", System.Data.SqlDbType.Int) { Value = productoVendido.Stock });
+                comando.Parameters.Add(new SqlParameter("IdVenta", System.Data.SqlDbType.Int) { Value = productoVendido.IdVenta });
+
+                return comando.ExecuteNonQuery() > 0;
             }
         }
 

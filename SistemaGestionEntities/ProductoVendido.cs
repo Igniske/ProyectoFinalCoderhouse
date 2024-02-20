@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProyectoFinalCoder
+namespace SistemaGestionEntities
 {
-    internal class ProductoVendido
+    public class ProductoVendido
     {
         private int _id;
         private int _idProducto;
@@ -15,7 +15,7 @@ namespace ProyectoFinalCoder
 
         public int Id { get; set; }
         public int IdProducto { get; set; }
-        
+
         public int Stock { get; set; }
 
         public int IdVenta { get; set; }
