@@ -105,7 +105,7 @@ namespace SistemaGestionData
             }
         }
 
-        public static bool ModificarProducto(Producto producto)
+        public static bool ModificarProducto(Producto producto, int Id)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
 
@@ -119,7 +119,7 @@ namespace SistemaGestionData
                         ", PrecioVenta = @PrecioVenta" +
                         ", Stock = @Stock" +
                         ", IdUsuario = @IdUsuario" +
-                        "WHERE Id = @Id";
+                        "WHERE Id = @" + Id;
 
                 SqlCommand comando = new SqlCommand(query, conexion);
 
@@ -133,7 +133,7 @@ namespace SistemaGestionData
             }
         }
 
-        public static bool EliminarProducto(Producto producto)
+        public static bool EliminarProducto(Producto producto, int Id)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
 
@@ -141,7 +141,7 @@ namespace SistemaGestionData
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
-                var query = "DELETE FROM Producto WHERE Id=@Id";
+                var query = "DELETE FROM Producto WHERE Id=@" + Id;
                 SqlCommand comando = new SqlCommand(query, conexion);
                 
                 comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = producto.Id });

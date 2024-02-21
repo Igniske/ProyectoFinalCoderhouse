@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SistemaGestionData\SistemaGestionData.csproj" />
+    <ProjectReference Include="..\SistemaGestionEntities\SistemaGestionEntities.csproj" />
+  </ItemGroup>
+
 </Project>

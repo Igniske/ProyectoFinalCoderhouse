@@ -19,8 +19,6 @@ namespace SistemaGestionBussiness
             return usuarioSeleccionado;
         }
 
-
-
         public static bool AgregarUsuario(Usuario usuario)
 
         {

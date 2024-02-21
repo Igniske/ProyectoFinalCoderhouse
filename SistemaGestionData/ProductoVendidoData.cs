@@ -103,46 +103,48 @@ namespace SistemaGestionData
             }
         }
 
-        public static void ModificarProductoVendido(ProductoVendido productoVendido)
+        public static bool ModificarProductoVendido(ProductoVendido productoVendido, int Id)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
 
-            var query = "UPDATE ProductoVendido" +
-                        //reformular aca
-                        " SET Id = @Id" +
+            
+
+            using (SqlConnection conexion = new SqlConnection(connectionString))
+            {
+                var query = "UPDATE ProductoVendido" +
+                        
+                        " SET Id = @" + Id +
                         ", IdProducto = @IdProducto" +
                         ", Stock = @Stock" +
                         ", IdVenta = @IdVenta" +
                         "WHERE Id = @Id";
 
-            using (SqlConnection conexion = new SqlConnection(connectionString))
-            {
-                conexion.Open();
-                using (SqlCommand comando = new SqlCommand(query, conexion))
-                {
-                    comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = productoVendido.Id });
-                    comando.Parameters.Add(new SqlParameter("IdProducto", System.Data.SqlDbType.Int) { Value = productoVendido.IdProducto }); ;
-                    comando.Parameters.Add(new SqlParameter("Stock", System.Data.SqlDbType.Int) { Value = productoVendido.Stock });
-                    comando.Parameters.Add(new SqlParameter("IdVenta", System.Data.SqlDbType.Int) { Value = productoVendido.IdVenta });
-                }
-                conexion.Close();
+                SqlCommand comando = new SqlCommand(query, conexion);
+
+                comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = productoVendido.Id });
+                comando.Parameters.Add(new SqlParameter("IdProducto", System.Data.SqlDbType.Int) { Value = productoVendido.IdProducto }); ;
+                comando.Parameters.Add(new SqlParameter("Stock", System.Data.SqlDbType.Int) { Value = productoVendido.Stock });
+                comando.Parameters.Add(new SqlParameter("IdVenta", System.Data.SqlDbType.Int) { Value = productoVendido.IdVenta });
+
+                return comando.ExecuteNonQuery() > 0;
             }
         }
 
-        public static void EliminarProductoVendido(ProductoVendido productoVendido)
+        public static bool EliminarProductoVendido(ProductoVendido productoVendido, int Id)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
 
-            var query = "DELETE FROM ProductoVendido WHERE Id=@Id";
+            
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
-                conexion.Open();
-                using (SqlCommand comando = new SqlCommand(query, conexion))
-                {
-                    comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = productoVendido.Id });
-                }
-                conexion.Close();
+                var query = "DELETE FROM ProductoVendido WHERE Id=@" + Id;
+
+                SqlCommand comando = new SqlCommand(query, conexion);
+                
+                comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = productoVendido.Id });
+
+                return comando.ExecuteNonQuery() > 0;
             }
         }
     }

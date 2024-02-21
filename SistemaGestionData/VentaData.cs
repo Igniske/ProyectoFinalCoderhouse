@@ -100,7 +100,7 @@ namespace SistemaGestionData
 
 
 
-        public static bool ModificarVenta(Venta venta)
+        public static bool ModificarVenta(Venta venta, int id)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
 
@@ -109,7 +109,7 @@ namespace SistemaGestionData
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
                 var query = "INSERT INTO Venta (Id, Comentarios, IdUsuario)" +
-                "VALUES (@Id, @Comentarios, @IdUsuario)";
+                "VALUES (@" + id + ", @Comentarios, @IdUsuario)";
 
                 SqlCommand comando = new SqlCommand(query, conexion);
                 comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = venta.Id });
@@ -120,13 +120,13 @@ namespace SistemaGestionData
             }
         }
 
-        public static bool EliminarVenta(Venta venta)
+        public static bool EliminarVenta(Venta venta, int id)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
-                var query = "DELETE FROM Venta WHERE Id=@Id";
+                var query = "DELETE FROM Venta WHERE Id=@" + id;
 
                 SqlCommand comando = new SqlCommand(query, conexion);
                 
