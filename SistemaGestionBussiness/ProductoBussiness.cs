@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SistemaGestionBussiness
 {
-    internal static class ProductoBussiness
+    public static class ProductoBussiness
     {
         public static Producto ObtenerProductoPorId(int id)
 

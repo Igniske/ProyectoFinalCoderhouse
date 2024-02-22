@@ -14,6 +14,17 @@ namespace SistemaGestionControllers.Controllers
             return SistemaGestionBussiness.VentaBussiness.ObtenerVentaPorId(id);
         }
 
+        public IActionResult AgregarVenta(Venta venta)
+        {
+            if (SistemaGestionBussiness.VentaBussiness.AgregarVenta(venta))
+            {
+                return Ok(venta);
+            } else 
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpPut("id")]
         public IActionResult ModificarVentaPorId(Venta venta, int id)
         {
@@ -25,7 +36,21 @@ namespace SistemaGestionControllers.Controllers
                 return BadRequest("No se ha podido modificar la venta indicada");
             }
         }
+
+        [HttpDelete("id")]
+        public IActionResult EliminarVentaPorId(Venta venta, int id)
+        {
+            if (SistemaGestionBussiness.VentaBussiness.BorrarUnaVentaPorId(venta, id))
+            {
+                return NoContent();
+            }
+            else
+            {
+                return NotFound("No se ha podido eliminar el usuario indicado");
+            }
+        }
     }
 
+    
 
 }
