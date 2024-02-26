@@ -42,9 +42,9 @@ namespace SistemaGestionControllers.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult EliminarUsuarioPorId(Usuario usuario, int id)
+        public IActionResult EliminarUsuarioPorId( int id)
         {
-            if(SistemaGestionBussiness.UsuarioBussiness.BorrarUnUsuarioPorId(usuario, id))
+            if(SistemaGestionBussiness.UsuarioBussiness.BorrarUnUsuarioPorId( id))
             {
                 return NoContent();
             }

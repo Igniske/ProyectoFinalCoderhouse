@@ -38,9 +38,9 @@ namespace SistemaGestionControllers.Controllers
         }
 
         [HttpDelete("id")]
-        public IActionResult EliminarVentaPorId(Venta venta, int id)
+        public IActionResult EliminarVentaPorId(int id)
         {
-            if (SistemaGestionBussiness.VentaBussiness.BorrarUnaVentaPorId(venta, id))
+            if (SistemaGestionBussiness.VentaBussiness.BorrarUnaVentaPorId( id))
             {
                 return NoContent();
             }

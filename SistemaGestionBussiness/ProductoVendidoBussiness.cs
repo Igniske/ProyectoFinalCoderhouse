@@ -27,10 +27,10 @@ namespace SistemaGestionBussiness
 
 
 
-        public static bool BorrarUnProductoVendidoPorId(ProductoVendido productoVendido, int id)
+        public static bool BorrarUnProductoVendidoPorId(int id)
 
         {
-            return ProductoVendidoData.EliminarProductoVendido(productoVendido, id);
+            return ProductoVendidoData.EliminarProductoVendido(id);
         }
 
 

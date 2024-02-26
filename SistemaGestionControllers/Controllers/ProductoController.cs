@@ -20,17 +20,18 @@ namespace SistemaGestionControllers.Controllers
         {
             if (SistemaGestionBussiness.ProductoBussiness.AgregaProducto(producto))
             {
-                return Ok(producto);
+                return base.Ok(new { mensaje = "Producto agregado", producto });
             }
             else
             {
-                return BadRequest("No se ha podido agregar el producto");
+                return base.Conflict( new { mensaje = "No se ha podido agregar el producto" });
             }
         }
+
         [HttpPut("id")]
-        public IActionResult ModificarProductoPorId([FromBody]Producto producto, int id)
+        public IActionResult ModificarProductoPorId([FromBody]Producto producto)
         {
-            if(SistemaGestionBussiness.ProductoBussiness.ActualizarProductoPorId(producto, id))
+            if(SistemaGestionBussiness.ProductoBussiness.ActualizarProductoPorId(producto, producto.Id))
             {
                 return Ok(producto);
             }

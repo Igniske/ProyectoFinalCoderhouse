@@ -132,7 +132,7 @@ namespace SistemaGestionData
             }
         }
 
-        public static bool EliminarUsuario(Usuario usuario, int Id)
+        public static bool EliminarUsuario(int Id)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
 
@@ -143,7 +143,7 @@ namespace SistemaGestionData
                 string query = "DELETE FROM Usuario WHERE Id=@" + Id;
 
                 SqlCommand comando = new SqlCommand(query, conexion);
-                comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = usuario.Id });
+                comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = Id });
                 return comando.ExecuteNonQuery() > 0;
             }
         }

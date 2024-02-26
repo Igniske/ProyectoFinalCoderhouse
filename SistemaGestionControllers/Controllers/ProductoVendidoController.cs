@@ -40,9 +40,9 @@ namespace SistemaGestionControllers.Controllers
         }
 
         [HttpDelete]
-        public IActionResult EliminarProductoVendidoPorId(ProductoVendido productoVendido, int id) 
+        public IActionResult EliminarProductoVendidoPorId( int id) 
         {
-            if(SistemaGestionBussiness.ProductoVendidoBussiness.BorrarUnProductoVendidoPorId(productoVendido, id))
+            if(SistemaGestionBussiness.ProductoVendidoBussiness.BorrarUnProductoVendidoPorId( id))
             {
                 return NoContent();
             }

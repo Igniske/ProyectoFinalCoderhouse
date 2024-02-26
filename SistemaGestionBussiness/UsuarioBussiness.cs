@@ -27,10 +27,10 @@ namespace SistemaGestionBussiness
 
 
 
-        public static bool BorrarUnUsuarioPorId(Usuario usuario,int id)
+        public static bool BorrarUnUsuarioPorId(int id)
 
         {
-            return UsuarioData.EliminarUsuario(usuario, id);
+            return UsuarioData.EliminarUsuario(id);
         }
 
 

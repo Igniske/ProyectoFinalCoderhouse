@@ -133,7 +133,7 @@ namespace SistemaGestionData
             }
         }
 
-        public static bool EliminarProducto(Producto producto, int Id)
+        public static bool EliminarProducto(int Id)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
 
@@ -144,7 +144,7 @@ namespace SistemaGestionData
                 var query = "DELETE FROM Producto WHERE Id=@" + Id;
                 SqlCommand comando = new SqlCommand(query, conexion);
                 
-                comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = producto.Id });
+                comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = Id });
 
                 return comando.ExecuteNonQuery() > 0;
             }

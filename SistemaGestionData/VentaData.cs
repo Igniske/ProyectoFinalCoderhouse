@@ -120,17 +120,17 @@ namespace SistemaGestionData
             }
         }
 
-        public static bool EliminarVenta(Venta venta, int id)
+        public static bool EliminarVenta(int Id)
         {
             string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
-                var query = "DELETE FROM Venta WHERE Id=@" + id;
+                var query = "DELETE FROM Venta WHERE Id=@" + Id;
 
                 SqlCommand comando = new SqlCommand(query, conexion);
                 
-                comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = venta.Id });
+                comando.Parameters.Add(new SqlParameter("Id", System.Data.SqlDbType.Int) { Value = Id });
 
                 return comando.ExecuteNonQuery() > 0;
             }
