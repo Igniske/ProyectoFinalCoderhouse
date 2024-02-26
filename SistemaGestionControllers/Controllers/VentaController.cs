@@ -13,7 +13,7 @@ namespace SistemaGestionControllers.Controllers
         {
             return SistemaGestionBussiness.VentaBussiness.ObtenerVentaPorId(id);
         }
-
+        [HttpPost]
         public IActionResult AgregarVenta(Venta venta)
         {
             if (SistemaGestionBussiness.VentaBussiness.AgregarVenta(venta))
