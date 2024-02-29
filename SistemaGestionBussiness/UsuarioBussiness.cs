@@ -13,8 +13,8 @@ namespace SistemaGestionBussiness
         public static Usuario ObtenerUsuarioPorId(int id)
 
         {
-            List<Usuario> listaDeUsuarios = UsuarioData.ObtenerUsuario(id); 
-            Usuario usuarioSeleccionado = listaDeUsuarios.FirstOrDefault(); 
+            List<Usuario> listaDeUsuarios = UsuarioData.ObtenerUsuario(id);
+            Usuario usuarioSeleccionado = listaDeUsuarios.FirstOrDefault();
 
             return usuarioSeleccionado;
         }
@@ -25,7 +25,10 @@ namespace SistemaGestionBussiness
             return UsuarioData.CrearUsuario(usuario);
         }
 
-
+        public static string ObtenerContraseniaPorNombreDeUsuario(string nombreUsuario)
+        {
+            return UsuarioData.ObtenerContraseniaPorNombreDeUsuario(nombreUsuario);
+        }
 
         public static bool BorrarUnUsuarioPorId(int id)
 

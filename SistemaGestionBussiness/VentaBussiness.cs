@@ -10,13 +10,12 @@ namespace SistemaGestionBussiness
 {
     public static class VentaBussiness
     {
-        public static Venta ObtenerVentaPorId(int id)
+        public static List<Venta> ObtenerVentaPorId(int id)
 
         {
             List<Venta> listaDeVentas = VentaData.ObtenerVenta(id);
-            Venta ventaSeleccionada = listaDeVentas.FirstOrDefault();
 
-            return ventaSeleccionada;
+            return listaDeVentas;
         }
 
         public static bool AgregarVenta(Venta venta)

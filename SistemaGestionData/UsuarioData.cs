@@ -52,6 +52,48 @@ namespace SistemaGestionData
             return usuariosConIdIndicado;
         }
 
+        public static string ObtenerContraseniaPorNombreDeUsuario(string nombreUsuario)
+        {
+            string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
+            var query = "SELECT IdUsuario FROM Usuario WHERE NombrUsuario=@" + nombreUsuario;
+            var contrasenia = "";
+
+            using (SqlConnection conexion = new SqlConnection(connectionString))
+            {
+                conexion.Open();
+
+                using (SqlCommand comando = new SqlCommand(query, conexion))
+                {
+                    var parametro = new SqlParameter();
+                    parametro.ParameterName = "nombreUsuario";
+                    parametro.SqlDbType = System.Data.SqlDbType.Int;
+                    parametro.Value = nombreUsuario;
+
+                    comando.Parameters.Add(parametro);
+
+                    using (SqlDataReader reader = comando.ExecuteReader())
+                    {
+                                contrasenia = reader["Contrasenia"].ToString();
+                    }
+                }
+            }
+            return contrasenia;
+        }
+
+        public static bool VerificarSiNombreDeUsuarioExiste(string nombreUsuario)
+        {
+            string connectionString = "Server=LAPTOP-93OIOE3K;Database=coderhouse;Trusted_Connection=True;";
+
+            using (SqlConnection conexion = new SqlConnection(connectionString))
+            {
+                var query = "SELECT nombreUsuario FROM Usuario WHERE nombreUsuario=@" + nombreUsuario;
+
+                SqlCommand comando = new SqlCommand(query, conexion);
+
+                return comando.ExecuteNonQuery() > 0;
+            }
+        }
+
         public static List<Usuario> ListarUsuarios()
         {
             List<Usuario> listaDeUsuarios = new List<Usuario>();

@@ -33,18 +33,18 @@ namespace SistemaGestionControllers.Controllers
         {
             if(SistemaGestionBussiness.ProductoBussiness.ActualizarProductoPorId(producto, producto.Id))
             {
-                return Ok(producto);
+                return base.Ok(producto);
             }
             else
             {
-                return BadRequest("No se ha podido modificar el producto");
+                return base.Conflict( new { mensaje = "No se ha podido modificar el producto" } );
             }
         }
 
         [HttpDelete("id")]
-        public IActionResult EliminarProductoPorId(Producto producto,int id) 
+        public IActionResult EliminarProductoPorId(int id) 
         {
-            if(SistemaGestionBussiness.ProductoBussiness.BorrarUnProductoPorId(producto, id))
+            if(SistemaGestionBussiness.ProductoBussiness.BorrarUnProductoPorId(id))
             {
                 return NoContent();
             }

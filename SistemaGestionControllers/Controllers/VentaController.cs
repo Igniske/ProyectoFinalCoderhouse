@@ -9,10 +9,11 @@ namespace SistemaGestionControllers.Controllers
     {
         [HttpGet("obtenerVenta")]
 
-        public Venta ObtenerVentaPorId(int id)
+        public List<Venta> ObtenerVentaPorId(int id)
         {
             return SistemaGestionBussiness.VentaBussiness.ObtenerVentaPorId(id);
         }
+
         [HttpPost]
         public IActionResult AgregarVenta(Venta venta)
         {
@@ -30,10 +31,10 @@ namespace SistemaGestionControllers.Controllers
         {
             if (SistemaGestionBussiness.VentaBussiness.ActualizarVentaPorId(venta, id))
             {
-                return Ok(venta);
+                return base.Ok(venta);
             } else
             {
-                return BadRequest("No se ha podido modificar la venta indicada");
+                return base.Conflict(new {   message = "No se ha podido modificar la venta indicada"});
             }
         }
 
@@ -50,7 +51,4 @@ namespace SistemaGestionControllers.Controllers
             }
         }
     }
-
-    
-
 }
